@@ -19,6 +19,7 @@ function PokemonInfo({ pokemonName }: { pokemonName: string }) {
   // 🐨 use React.useEffect where the callback should be called whenever the
   // pokemon name changes.
   useEffect(() => {
+    // set our variable to true
     let isFetced = true;
 
     // 💰 if the pokemonName is falsy (an empty string) then don't bother making the request (exit early).
