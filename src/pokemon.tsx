@@ -213,7 +213,7 @@ function ErrorFallback({
   resetErrorBoundary,
 }: {
   error: Error;
-  resetErrorBoundary: any;
+  resetErrorBoundary: (...args: Array<unknown>) => void;
 }) {
   return (
     <div role="alert">
