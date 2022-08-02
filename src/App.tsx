@@ -15,6 +15,8 @@ import {
 function PokemonInfo({ pokemonName }: { pokemonName: string }) {
   // 🐨 Have state for the pokemon (null)
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+  // handle error
+  const [error, setError] = useState<Error | null>(null);
 
   // 🐨 use React.useEffect where the callback should be called whenever the
   // pokemon name changes.
@@ -29,17 +31,20 @@ function PokemonInfo({ pokemonName }: { pokemonName: string }) {
 
     // 🐨 before calling `fetchPokemon`, clear the current pokemon state by setting it to null.
     setPokemon(null);
+    setError(null);
 
     // 💰 Use the `fetchPokemon` function to fetch a pokemon by its name:
     //   fetchPokemon('Pikachu').then(
     //     pokemonData => {/* update all the state here */},
     //   )
-    fetchPokemon(pokemonName).then((pokemonData) => {
-      /* update all the state here */
-      if (isFetced) {
-        setPokemon(pokemonData);
-      }
-    });
+    fetchPokemon(pokemonName)
+      .then((pokemonData) => {
+        /* update all the state here */
+        if (isFetced) {
+          setPokemon(pokemonData);
+        }
+      })
+      .catch((error) => setError(error));
     return () => {
       // cancel the request before component unmounts
       isFetced = false;
@@ -48,7 +53,14 @@ function PokemonInfo({ pokemonName }: { pokemonName: string }) {
   }, [pokemonName]);
 
   // 🐨 return the following things based on the `pokemon` state and `pokemonName` prop:
-  if (pokemon && pokemonName) {
+  if (error) {
+    return (
+      <div role="alert">
+        There was an error:
+        <pre style={{ whiteSpace: "normal" }}>{error.message}</pre>
+      </div>
+    );
+  } else if (pokemon && pokemonName) {
     //   3. pokemon: <PokemonDataView pokemon={pokemon} />
     return <PokemonDataView pokemon={pokemon} />;
   } else if (pokemonName && !pokemon) {
