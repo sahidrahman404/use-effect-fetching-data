@@ -48,17 +48,16 @@ function PokemonInfo({ pokemonName }: { pokemonName: string }) {
   }, [pokemonName]);
 
   // 🐨 return the following things based on the `pokemon` state and `pokemonName` prop:
-  //   1. no pokemonName: 'Submit a pokemon'
-  if (!pokemonName) {
+  if (pokemon && pokemonName) {
+    //   3. pokemon: <PokemonDataView pokemon={pokemon} />
+    return <PokemonDataView pokemon={pokemon} />;
+  } else if (pokemonName && !pokemon) {
+    //   2. pokemonName but no pokemon: <PokemonInfoFallback name={pokemonName} />
+    return <PokemonInfoFallback name={pokemonName} />;
+  } else {
+    //   1. no pokemonName: 'Submit a pokemon'
     return <h1>Submit a pokemon</h1>;
   }
-
-  //   2. pokemonName but no pokemon: <PokemonInfoFallback name={pokemonName} />
-  if (pokemonName && !pokemon) {
-    return <PokemonInfoFallback name={pokemonName} />;
-  }
-  //   3. pokemon: <PokemonDataView pokemon={pokemon} />
-  return <PokemonDataView pokemon={pokemon as Pokemon} />;
 }
 
 function App() {
